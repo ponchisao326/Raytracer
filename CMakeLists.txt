@@ -17,3 +17,9 @@ target_include_directories(core PUBLIC src)
 
 add_executable(raytracer src/main.cpp)
 target_link_libraries(raytracer core)
+
+enable_testing()
+
+add_executable(image_tests tests/image_tests.cpp)
+target_link_libraries(image_tests core)
+add_test(NAME image_tests COMMAND image_tests)

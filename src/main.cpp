@@ -14,8 +14,8 @@ int main() {
     }
 
     std::filesystem::create_directories("out");
-    if (!image.write_ppm("out/image.ppm")) {
-        std::cerr << "error saving out/image.ppm\n";
+    if (!image.write_png("out/image.png") || !image.write_ppm("out/image.ppm")) {
+        std::cerr << "error saving out/image\n";
         return 1;
     }
     return 0;

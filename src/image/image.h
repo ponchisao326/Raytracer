@@ -21,6 +21,7 @@ public:
     void set(int x, int y, Pixel p);
 
     bool write_ppm(const std::string& path) const;
+    bool write_png(const std::string& path) const;
 
 private:
     std::size_t index(int x, int y) const;
@@ -29,3 +30,6 @@ private:
     int height_;
     std::vector<Pixel> pixels_;
 };
+
+std::uint32_t crc32(const std::uint8_t* data, std::size_t size, std::uint32_t crc = 0);
+std::uint32_t adler32(const std::uint8_t* data, std::size_t size);
