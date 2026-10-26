@@ -1,15 +1,17 @@
 #include "image/image.h"
+#include "render/camera.h"
+#include "render/shade.h"
 
 #include <filesystem>
 #include <iostream>
 
 int main() {
-    Image image(640, 360);
-    for (int y = 0; y < image.height(); ++y) {
-        for (int x = 0; x < image.width(); ++x) {
-            std::uint8_t r = x * 255 / image.width();
-            std::uint8_t g = y * 255 / image.height();
-            image.set(x, y, {r, g, 64});
+    const int width = 640, height = 360;
+    Camera cam(width, height);
+    Image image(width, height);
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+            image.set(x, y, to_pixel(sky(cam.get_ray(x, y))));
         }
     }
 
