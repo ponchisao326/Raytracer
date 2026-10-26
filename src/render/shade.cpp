@@ -4,3 +4,10 @@ Color sky(const Ray& ray) {
     double t = 0.5 * (normalized(ray.direction).y + 1.0);
     return lerp({0.04, 0.07, 0.14}, {0.16, 0.24, 0.42}, t);
 }
+
+Color shade_flat(const Ray& ray, const Scene& scene) {
+    if (intersect(ray, scene.sphere).t) {
+        return sphere_color;
+    }
+    return sky(ray);
+}
