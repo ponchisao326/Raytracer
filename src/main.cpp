@@ -9,12 +9,12 @@
 int main() {
     const int width = 640, height = 360;
     Camera cam(width, height);
-    Scene scene{{{0, 0, -3}, 1}};
+    Scene scene{{{0, 0, -3}, 1}, normalized({-1, 1, 1})};
 
     Image image(width, height);
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
-            image.set(x, y, to_pixel(shade_flat(cam.get_ray(x, y), scene)));
+            image.set(x, y, to_pixel(shade(cam.get_ray(x, y), scene)));
         }
     }
 

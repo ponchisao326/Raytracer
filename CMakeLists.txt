@@ -23,3 +23,7 @@ enable_testing()
 add_executable(image_tests tests/image_tests.cpp)
 target_link_libraries(image_tests core)
 add_test(NAME image_tests COMMAND image_tests)
+
+add_executable(render_tests tests/render_tests.cpp)
+target_link_libraries(render_tests core)
+add_test(NAME render_tests COMMAND render_tests)
