@@ -20,6 +20,7 @@ struct Options {
     int width = 640;
     int height = 360;
     bool flat = false;
+    int frame_rows = 0;
     bool trace = false;
     int trace_x = 0;
     int trace_y = 0;
@@ -48,6 +49,10 @@ std::optional<Options> parse_args(int argc, char** argv) {
             if (!parse_size(argv[++i], opt.width, opt.height)) {
                 return std::nullopt;
             }
+        } else if (arg == "--frames" && i + 1 < argc) {
+            if (!parse_int(argv[++i], opt.frame_rows) || opt.frame_rows <= 0) {
+                return std::nullopt;
+            }
         } else if (arg == "--trace" && i + 2 < argc) {
             opt.trace = true;
             if (!parse_int(argv[++i], opt.trace_x) || !parse_int(argv[++i], opt.trace_y)) {
@@ -59,7 +64,7 @@ std::optional<Options> parse_args(int argc, char** argv) {
     }
     if (opt.trace) {
         bool inside = opt.trace_x >= 0 && opt.trace_y >= 0 && opt.trace_x < opt.width && opt.trace_y < opt.height;
-        if (!inside) {
+        if (!inside || opt.frame_rows > 0) {
             return std::nullopt;
         }
     }
@@ -105,6 +110,12 @@ int render(const Options& opt, const Camera& cam, const Scene& scene, Shader sha
         for (int x = 0; x < opt.width; ++x) {
             image.set(x, y, to_pixel(shader(cam.get_ray(x, y), scene)));
         }
+        if (opt.frame_rows > 0 && ((y + 1) % opt.frame_rows == 0 || y + 1 == opt.height)) {
+            if (!image.write_rgb(std::cout)) {
+                std::cerr << "error writing frame\n";
+                return 1;
+            }
+        }
     }
 
     std::string name = opt.flat ? "out/flat" : "out/image";
@@ -122,7 +133,7 @@ int render(const Options& opt, const Camera& cam, const Scene& scene, Shader sha
 int main(int argc, char** argv) {
     auto opt = parse_args(argc, argv);
     if (!opt) {
-        std::cerr << "usage: raytracer [--size WxH] [--flat] [--trace X Y]\n";
+        std::cerr << "usage: raytracer [--size WxH] [--flat] [--frames N] [--trace X Y]\n";
         return 2;
     }
 

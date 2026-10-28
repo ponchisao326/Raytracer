@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <ostream>
 #include <string>
 #include <vector>
 
@@ -22,6 +23,7 @@ public:
 
     bool write_ppm(const std::string& path) const;
     bool write_png(const std::string& path) const;
+    bool write_rgb(std::ostream& out) const;
 
 private:
     std::size_t index(int x, int y) const;

@@ -5,6 +5,8 @@
 #include <fstream>
 #include <stdexcept>
 
+static_assert(sizeof(Pixel) == 3);
+
 namespace {
 
 std::array<std::uint32_t, 256> make_crc_table() {
@@ -132,4 +134,10 @@ bool Image::write_png(const std::string& path) const {
     put_chunk(png, "IDAT", zlib_store(raw));
     put_chunk(png, "IEND", {});
     return write_file(path, png);
+}
+
+bool Image::write_rgb(std::ostream& out) const {
+    out.write(reinterpret_cast<const char*>(pixels_.data()), pixels_.size() * 3);
+    out.flush();
+    return out.good();
 }
