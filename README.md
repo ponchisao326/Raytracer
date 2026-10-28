@@ -1,6 +1,6 @@
 # Raytracer
 
-Raytracer in C++20 from scratch, no dependencies (the PNG/PPM writers are handwritten too).
+Raytracer in C++20 from scratch, no dependencies (the PNG/PPM writers are handwritten too). The tests were written with AI assistance.
 
 ## Build
 
